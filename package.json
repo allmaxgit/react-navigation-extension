@@ -1,0 +1,28 @@
+{
+  "name": "react-navigation-extension",
+  "version": "1.0.0",
+  "description": "Navigation with using refs on navigators",
+  "main": "src.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/allmaxgit/react-navigation-extension.git"
+  },
+  "keywords": [
+    "react",
+    "react-native",
+    "navigation",
+    "react-navigation",
+    "extension",
+    "refs",
+    "performance"
+  ],
+  "author": "Dmitriy Shishkin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/allmaxgit/react-navigation-extension/issues"
+  },
+  "homepage": "https://github.com/allmaxgit/react-navigation-extension#readme"
+}

@@ -6,6 +6,7 @@
 
 /* eslint-disable no-underscore-dangle, camelcase */
 
+import type { ElementRef } from 'react';
 import { NavigationActions } from 'react-navigation';
 import type {
   NavigationScreenProp,
@@ -23,7 +24,7 @@ type Navigator = {
 
 const navigators: { [routeName: string]: ?Navigator } = {};
 
-export function setNavigatior(routeName: string, navigator: any) {
+export function setNavigatior(routeName: string, navigator: ElementRef<*>) {
   if (navigator) {
     const { subs } = navigator;
     if (subs) {
@@ -82,42 +83,3 @@ export const makeNavigation = (navigationRouteName: string) => ({
     return false;
   },
 });
-
-export const mainNavigation = makeNavigation(routeNames.main);
-export const jobsNavigation = makeNavigation(routeNames.jobs);
-export const historyNavigation = makeNavigation(routeNames.history);
-export const matchingNavigation = makeNavigation(routeNames.matching);
-export const profileNavigation = makeNavigation(routeNames.profile);
-export const supportNavigation = makeNavigation(routeNames.support);
-
-export function getNavigationByName(routeName: ?string) {
-  switch (routeName) {
-    case routeNames.jobs:
-      return jobsNavigation;
-    case routeNames.history:
-      return historyNavigation;
-    default:
-      return mainNavigation;
-  }
-}
-
-let selectedTabRouteName: ?string;
-
-export function getNavigationByTabRouteName(tabRouteName: ?string = selectedTabRouteName) {
-  switch (tabRouteName) {
-    case routeNames.jobs:
-      return jobsNavigation;
-    case routeNames.history:
-      return historyNavigation;
-    case routeNames.profile:
-      return profileNavigation;
-    case routeNames.support:
-      return supportNavigation;
-    default:
-      return null;
-  }
-}
-
-export function setSelectedTabRouteName(tabRouteName: ?string) {
-  selectedTabRouteName = tabRouteName;
-}
