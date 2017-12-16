@@ -64,14 +64,35 @@ export const makeNavigation = (navigationRouteName: string) => ({
       navigator._navigation.goBack();
     }
   },
-  reset: (routeName?: string) => {
+  reset: (routeName?: string | string[], params?: Object) => {
     const navigator = navigators[navigationRouteName];
     if (navigator) {
       const { _navigation } = navigator;
-      const action = routeName ? NavigationActions.reset({
-        actions: [NavigationActions.navigate({ routeName })],
-        index: 0,
-      }) : NavigationActions.back({ key: _navigation.state.routes[1].key });
+      let action: NavigationNavigateAction;
+      if (routeName) {
+        const actions: NavigationNavigateAction[] = [];
+        let index: number;
+        if (Array.isArray(routeName)) {
+          index = routeName.length - 1;
+          routeName.forEach((rn, i) => {
+            const payload: {
+              routeName: string,
+              params?: ?NavigationParams,
+              action?: ?NavigationNavigateAction,
+            } = { routeName: rn };
+            if (i === index && params) {
+              payload.params = params;
+            }
+            actions.push(NavigationActions.navigate(payload));
+          });
+        } else {
+          actions.push(NavigationActions.navigate({ routeName, params }));
+          index = 0;
+        }
+        action = NavigationActions.reset({ actions, index });
+      } else {
+        action = NavigationActions.back({ key: _navigation.state.routes[1].key });
+      }
       _navigation.dispatch(action);
     }
   },

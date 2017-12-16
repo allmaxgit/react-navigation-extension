@@ -39,7 +39,7 @@
     ): boolean => {},
     setParams: (params: NavigationParams): boolean => {},
     goBack: () => {},
-    reset: (routeName?: string) => {},
+    reset: (routeName?: string | string[], params?: Object) => {},
     getCanNavigateBack: () => {},
   });
   ```
