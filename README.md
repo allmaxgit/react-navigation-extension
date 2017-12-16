@@ -1,6 +1,6 @@
 #### Getting started
 
-1. Install package:
+1. Install package
 
   ```
   yarn add react-navigation-extension
@@ -28,7 +28,7 @@
   import { mainNavigation } from '../../global/navigation';
 
   mainNavigation.navigate('SIGN_UP');
-  mainNavigation.reset('SIGN_IN', 'FORGOT_PASSWORD', { email: 'user@mail.com' });
+  mainNavigation.reset(['SIGN_IN', 'FORGOT_PASSWORD'], { email: 'user@mail.com' });
   ```
 
 #### Available methods
