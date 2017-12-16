@@ -15,8 +15,6 @@ import type {
   NavigationNavigateAction,
 } from 'react-navigation/src/TypeDefinition';
 
-import routeNames from './routeNames';
-
 type Navigator = {
   _navigation: NavigationScreenProp<NavigationState>,
   subs: ?{ remove: () => void }

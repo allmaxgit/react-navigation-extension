@@ -25,18 +25,15 @@
   ```javascript
   import { mainNavigation } from 'react-navigation-extension';
 
-  mainNavigation.navigate('SIGN_UP')
+  mainNavigation.navigate('SIGN_UP');
+  mainNavigation.reset('SIGN_IN', 'FORGOT_PASSWORD', { email: 'user@mail.com' });
   ```
 
 #### Available methods
 
   ```javascript
   export const makeNavigation = (navigationRouteName: string) => ({
-    navigate: (
-      routeName: string,
-      params?: NavigationParams,
-      action?: NavigationNavigateAction,
-    ): boolean => {},
+    navigate: (routeName: string, params?: Object): boolean => {},
     setParams: (params: NavigationParams): boolean => {},
     goBack: () => {},
     reset: (routeName?: string | string[], params?: Object) => {},
