@@ -17,13 +17,15 @@
 3. Make navigation
 
   ```javascript
+  import { makeNavigation } from 'react-navigation-extension';
+  
   export const mainNavigation = makeNavigation('MAIN_NAVIGATOR');
   ```
 
 4. Navigate simple
 
   ```javascript
-  import { mainNavigation } from 'react-navigation-extension';
+  import { mainNavigation } from '../../global/navigation';
 
   mainNavigation.navigate('SIGN_UP');
   mainNavigation.reset('SIGN_IN', 'FORGOT_PASSWORD', { email: 'user@mail.com' });
