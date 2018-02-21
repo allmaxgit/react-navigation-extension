@@ -10,9 +10,9 @@ import type { ElementRef } from 'react';
 import { NavigationActions } from 'react-navigation';
 import type {
   NavigationScreenProp,
-  NavigationState,
-  NavigationParams,
-  NavigationNavigateAction,
+    NavigationState,
+    NavigationParams,
+    NavigationNavigateAction,
 } from 'react-navigation/src/TypeDefinition';
 
 type Navigator = {
@@ -98,6 +98,14 @@ export const makeNavigation = (navigationRouteName: string) => ({
     const navigator = navigators[navigationRouteName];
     if (navigator) {
       return navigator._navigation.state.index > 0;
+    }
+    return false;
+  },
+  getCurrentRoute: () => {
+    const navigator = navigators[navigationRouteName];
+    if (navigator) {
+      const routes = navigator._navigation.state.routes;
+      return routes[routes.length - 1];
     }
     return false;
   },
