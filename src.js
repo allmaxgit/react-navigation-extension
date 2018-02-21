@@ -104,8 +104,8 @@ export const makeNavigation = (navigationRouteName: string) => ({
   getCurrentRoute: () => {
     const navigator = navigators[navigationRouteName];
     if (navigator) {
-      const routes = navigator._navigation.state.routes;
-      return routes[routes.length - 1];
+      const { routes, index } = navigator._navigation.state;
+      return routes[index];
     }
     return false;
   },
