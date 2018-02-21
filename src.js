@@ -101,4 +101,12 @@ export const makeNavigation = (navigationRouteName: string) => ({
     }
     return false;
   },
+  getCurrentRoute: () => {
+    const navigator = navigators[navigationRouteName];
+    if (navigator) {
+      const { routes, index } = navigator._navigation.state;
+      return routes[index];
+    }
+    return null;
+  },
 });
