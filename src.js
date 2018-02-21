@@ -10,9 +10,9 @@ import type { ElementRef } from 'react';
 import { NavigationActions } from 'react-navigation';
 import type {
   NavigationScreenProp,
-    NavigationState,
-    NavigationParams,
-    NavigationNavigateAction,
+  NavigationState,
+  NavigationParams,
+  NavigationNavigateAction,
 } from 'react-navigation/src/TypeDefinition';
 
 type Navigator = {
