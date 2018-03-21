@@ -115,4 +115,12 @@ export const makeNavigation = (navigationRouteName: string) => ({
     }
     return null;
   },
+  getCurrentStack: () => {
+    const navigator = navigators[navigationRouteName];
+    if (navigator) {
+      const { routes } = navigator._navigation.state;
+      return routes;
+    }
+    return null;
+  },
 });
