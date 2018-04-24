@@ -38,7 +38,7 @@
     navigate: (routeName: string, params?: Object): boolean => {},
     setParams: (params: NavigationParams): boolean => {},
     goBack: () => {},
-    pop: () => {},
+    pop: (): ?string => {},
     reset: (routeName?: string | string[], params?: Object) => {},
     getCanNavigateBack: () => {},
   });
