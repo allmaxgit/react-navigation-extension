@@ -119,5 +119,5 @@ export const makeNavigation = (navigationRouteName: string) => ({
       return routes[index];
     }
     return null;
-  }
+  },
 });
