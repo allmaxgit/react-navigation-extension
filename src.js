@@ -65,7 +65,11 @@ export const makeNavigation = (navigationRouteName: string) => ({
   pop: () => {
     const navigator = navigators[navigationRouteName];
     if (navigator) {
+      const routes = navigator.state.nav.routes;
+      const offset = routes.length >= 2 ? 2 : 1;
+      const route = routes[routes.length - offset];
       navigator._navigation.pop();
+      return route.routeName;
     }
   },
   reset: (routeName?: string | string[], params?: Object) => {
@@ -114,13 +118,5 @@ export const makeNavigation = (navigationRouteName: string) => ({
       return routes[index];
     }
     return null;
-  },
-  getCurrentStack: () => {
-    const navigator = navigators[navigationRouteName];
-    if (navigator) {
-      const { routes } = navigator._navigation.state;
-      return routes;
-    }
-    return null;
-  },
+  }
 });
