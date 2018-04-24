@@ -62,13 +62,12 @@ export const makeNavigation = (navigationRouteName: string) => ({
       navigator._navigation.goBack();
     }
   },
-  pop: (): String | null => {
+  pop: () => {
     const navigator = navigators[navigationRouteName];
     if (navigator) {
-      const routes = navigator.state.nav.routes;
-      const index: number = routes.length - 1;
-      const offset: number = index >= 1 ? 1 : 0;
-      const route: Object = routes[index - offset];
+      const { routes, index } = navigator.state.nav;
+      const offset = index >= 1 ? 1 : 0;
+      const route = routes[index - offset];
       navigator._navigation.pop();
       return route.routeName;
     }
