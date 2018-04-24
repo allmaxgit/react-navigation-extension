@@ -68,7 +68,7 @@ export const makeNavigation = (navigationRouteName: string) => ({
       const routes = navigator.state.nav.routes;
       const index: number = routes.length - 1;
       const offset: number = index >= 1 ? 1 : 0;
-      const route: Object = routes[routes.length - offset];
+      const route: Object = routes[index - offset];
       navigator._navigation.pop();
       return route.routeName;
     }
