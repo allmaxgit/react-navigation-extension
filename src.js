@@ -65,8 +65,13 @@ export const makeNavigation = (navigationRouteName: string) => ({
   pop: () => {
     const navigator = navigators[navigationRouteName];
     if (navigator) {
+      const { routes, index } = navigator.state.nav;
+      const offset = index >= 1 ? 1 : 0;
+      const route = routes[index - offset];
       navigator._navigation.pop();
+      return route.routeName;
     }
+    return null;
   },
   reset: (routeName?: string | string[], params?: Object) => {
     const navigator = navigators[navigationRouteName];
