@@ -7,7 +7,7 @@
 /* eslint-disable no-underscore-dangle, camelcase */
 
 import type { ElementRef } from 'react';
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, StackActions } from 'react-navigation';
 import type {
   NavigationScreenProp,
   NavigationState,
@@ -68,7 +68,7 @@ export const makeNavigation = (navigationRouteName: string) => ({
       const { routes, index } = navigator.state.nav;
       const offset = index >= 1 ? 1 : 0;
       const route = routes[index - offset];
-      navigator._navigation.pop();
+      navigator._navigation.dispatch(StackActions.pop());
       return route.routeName;
     }
     return null;
@@ -98,7 +98,7 @@ export const makeNavigation = (navigationRouteName: string) => ({
           actions.push(NavigationActions.navigate({ routeName, params }));
           index = 0;
         }
-        action = NavigationActions.reset({ actions, index });
+        action = StackActions.reset({ actions, index });
       } else {
         action = NavigationActions.back({ key: _navigation.state.routes[1].key });
       }
