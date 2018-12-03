@@ -9,77 +9,102 @@
 import type { ElementRef } from 'react';
 import { NavigationActions, StackActions } from 'react-navigation';
 import type {
-  NavigationScreenProp,
   NavigationState,
+  NavigationDispatch,
+  NavigationContainer,
+  NavigationScreenProp,
   NavigationParams,
   NavigationNavigateAction,
-} from 'react-navigation/src/TypeDefinition';
+  NavigationResetAction,
+  NavigationPopToTopAction,
+} from 'react-navigation';
 
-type Navigator = {
-  _navigation: NavigationScreenProp<NavigationState>,
-  subs: ?{ remove: () => void }
+type Navigator = NavigationContainer<NavigationState, {}, {}> & {
+  state: { nav: NavigationState },
+  dispatch: NavigationDispatch,
 };
 
-const navigators: { [routeName: string]: ?Navigator } = {};
+const navigatorsByName: { [routeName: string]: ?Navigator } = {};
 
-export function setNavigatior(routeName: string, navigator: ElementRef<*>) {
-  if (navigator) {
-    const { subs } = navigator;
-    if (subs) {
-      subs.remove();
+export const setNavigatior = (
+  navigationName: string,
+  needRemoveSubs?: true,
+) => (navigator: ElementRef<*>) => {
+  if (navigator && navigatorsByName[navigationName] == null) {
+    if (needRemoveSubs) {
+      const { subs } = navigator;
+      if (subs) {
+        subs.remove();
+      }
     }
-    navigators[routeName] = navigator;
+    navigatorsByName[navigationName] = navigator;
   }
 }
 
-export const makeNavigation = (navigationRouteName: string) => ({
+export const createNavigation = (navigationRouteName: string) => ({
   navigate: (
     routeName: string,
     params?: NavigationParams,
-    action?: NavigationNavigateAction,
-  ): boolean => {
-    const navigator = navigators[navigationRouteName];
+    action?: ?NavigationNavigateAction,
+    key?: string,
+  ) => {
+    const navigator = navigatorsByName[navigationRouteName];
     if (navigator) {
-      return navigator._navigation.navigate(routeName, params, action);
+      const navigationAction = NavigationActions.navigate({
+        routeName,
+        params,
+        action,
+        key,
+      });
+      navigator.dispatch(navigationAction);
     }
-    return false;
   },
-  setParams: (params: NavigationParams): boolean => {
-    const navigator = navigators[navigationRouteName];
+  setParams: (params: NavigationParams, key?: string) => {
+    const navigator = navigatorsByName[navigationRouteName];
     if (navigator) {
-      const { _navigation } = navigator;
+      const {
+        state: {
+          nav: {
+            routes,
+            index,
+          },
+        },
+      } = navigator;
       const action = NavigationActions.setParams({
-        key: _navigation.state.routes[0].key,
+        key: key || routes[index].key,
         params,
       });
-      _navigation.dispatch(action);
-    }
-    return false;
-  },
-  goBack: () => {
-    const navigator = navigators[navigationRouteName];
-    if (navigator) {
-      navigator._navigation.goBack();
+      navigator.dispatch(action);
     }
   },
-  pop: () => {
-    const navigator = navigators[navigationRouteName];
+  goBack: (key?: ?string) => {
+    const navigator = navigatorsByName[navigationRouteName];
     if (navigator) {
-      const { routes, index } = navigator.state.nav;
-      const offset = index >= 1 ? 1 : 0;
-      const route = routes[index - offset];
-      navigator._navigation.dispatch(StackActions.pop());
-      return route.routeName;
+      const action = NavigationActions.back({ key });
+      navigator.dispatch(action);
     }
-    return null;
+  },
+  pop: (n?: number) => {
+    const navigator = navigatorsByName[navigationRouteName];
+    if (navigator) {
+      const action = StackActions.pop({ n });
+      navigator.dispatch(action);
+    }
   },
   reset: (routeName?: string | string[], params?: Object) => {
-    const navigator = navigators[navigationRouteName];
+    const navigator = navigatorsByName[navigationRouteName];
     if (navigator) {
-      const { _navigation } = navigator;
-      let action: NavigationNavigateAction;
+      const {
+        state: {
+          nav: {
+            routes,
+            index,
+          },
+        },
+      } = navigator;
+      let action: NavigationResetAction | NavigationPopToTopAction;
       if (routeName) {
-        const actions: NavigationNavigateAction[] = [];
+        const actions: Array<NavigationNavigateAction> = [];
         let index: number;
         if (Array.isArray(routeName)) {
           index = routeName.length - 1;
@@ -88,6 +113,7 @@ export const makeNavigation = (navigationRouteName: string) => ({
               routeName: string,
               params?: ?NavigationParams,
               action?: ?NavigationNavigateAction,
+              key?: string,
             } = { routeName: rn };
             if (i === index && params) {
               payload.params = params;
@@ -100,23 +126,39 @@ export const makeNavigation = (navigationRouteName: string) => ({
         }
         action = StackActions.reset({ actions, index });
       } else {
-        action = NavigationActions.back({ key: _navigation.state.routes[1].key });
+        action = StackActions.popToTop({});
       }
-      _navigation.dispatch(action);
+      navigator.dispatch(action);
     }
   },
   getCanNavigateBack: () => {
-    const navigator = navigators[navigationRouteName];
+    const navigator = navigatorsByName[navigationRouteName];
     if (navigator) {
-      return navigator._navigation.state.index > 0;
+      const {
+        state: {
+          nav: {
+            routes,
+            index,
+          },
+        },
+      } = navigator;
+      return index > 0;
     }
     return false;
   },
-  getCurrentRoute: () => {
-    const navigator = navigators[navigationRouteName];
+  getCurrentRouteName: (): ?string => {
+    const navigator = navigatorsByName[navigationRouteName];
     if (navigator) {
-      const { routes, index } = navigator._navigation.state;
-      return routes[index];
+      const {
+        state: {
+          nav: {
+            routes,
+            index,
+          },
+        },
+      } = navigator;
+      const { routeName } = routes[index];
+      return routeName;
     }
     return null;
   },

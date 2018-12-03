@@ -11,21 +11,21 @@
   ```javascript
   import { setNavigatior } from 'react-navigation-extension';
 
-  <Navigator ref={(ref) => { setNavigatior('MAIN_NAVIGATOR', ref); }} />
+  <AppContainer ref={setNavigatior(navigationNames.main)} />
   ```
 
-3. Make navigation
+3. Create navigation
 
   ```javascript
-  import { makeNavigation } from 'react-navigation-extension';
+  import { createNavigation } from 'react-navigation-extension';
   
-  export const mainNavigation = makeNavigation('MAIN_NAVIGATOR');
+  export const mainNavigation = createNavigation('MAIN_NAVIGATOR');
   ```
 
 4. Navigate simple
 
   ```javascript
-  import { mainNavigation } from '../../global/navigation';
+  import { mainNavigation } from '~/navigation';
 
   mainNavigation.navigate('SIGN_UP');
   mainNavigation.reset(['SIGN_IN', 'FORGOT_PASSWORD'], { email: 'user@mail.com' });
@@ -35,11 +35,17 @@
 
   ```javascript
   export const makeNavigation = (navigationRouteName: string) => ({
-    navigate: (routeName: string, params?: Object): boolean => {},
-    setParams: (params: NavigationParams): boolean => {},
-    goBack: () => {},
-    pop: (): ?string => {},
-    reset: (routeName?: string | string[], params?: Object) => {},
-    getCanNavigateBack: () => {},
+    navigate: (
+      routeName: string,
+      params?: NavigationParams,
+      action?: ?NavigationNavigateAction,
+      key?: string,
+    ) => void,
+    setParams: (params: NavigationParams, key?: string) => void,
+    goBack: (key?: ?string) => void,
+    pop: (n?: number) => void,
+    reset: (routeName?: string | Array<string>, params?: Object) => void,
+    getCanNavigateBack: () => boolean,
+    getCurrentRouteName: () => ?string,
   });
   ```
