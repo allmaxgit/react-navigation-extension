@@ -26,7 +26,7 @@ type Navigator = NavigationContainer<NavigationState, {}, {}> & {
 
 const navigatorsByName: { [routeName: string]: ?Navigator } = {};
 
-export const setNavigatior = (
+export const createNavigatiorSetter = (
   navigationName: string,
   needRemoveSubs?: true,
 ) => (navigator: ElementRef<*>) => {

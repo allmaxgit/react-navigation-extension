@@ -9,9 +9,13 @@
 2. Set navigator
 
   ```javascript
-  import { setNavigatior } from 'react-navigation-extension';
+  import { createNavigatiorSetter } from 'react-navigation-extension';
 
-  <AppContainer ref={setNavigatior(navigationNames.main)} />
+  const navigatiorSetter = createNavigatiorSetter(navigationNames.main);
+
+  function App() {
+    return <Navigation ref={navigatiorSetter} />;
+  }
   ```
 
 3. Create navigation
