@@ -1,6 +1,6 @@
 {
   "name": "react-navigation-extension",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Convenient navigation service with using refs on navigators",
   "main": "src.js",
   "scripts": {

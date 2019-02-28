@@ -84,6 +84,23 @@ export const createNavigation = (navigationRouteName: string) => ({
       navigator.dispatch(action);
     }
   },
+  push: (
+    routeName: string,
+    params?: NavigationParams,
+    action?: NavigationNavigateAction,
+    key?: string,
+  ) => {
+    const navigator = navigatorsByName[navigationRouteName];
+    if (navigator) {
+      const pushAction = StackActions.push({
+        routeName,
+        params,
+        action,
+        key,
+      });
+      navigator.dispatch(pushAction);
+    }
+  },
   pop: (n?: number) => {
     const navigator = navigatorsByName[navigationRouteName];
     if (navigator) {

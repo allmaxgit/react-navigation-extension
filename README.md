@@ -47,6 +47,12 @@
     ) => void,
     setParams: (params: NavigationParams, key?: string) => void,
     goBack: (key?: ?string) => void,
+    push: (
+      routeName: string,
+      params?: NavigationParams,
+      action?: NavigationNavigateAction,
+      key?: string,
+    ) => void,
     pop: (n?: number) => void,
     reset: (routeName?: string | Array<string>, params?: Object) => void,
     getCanNavigateBack: () => boolean,
