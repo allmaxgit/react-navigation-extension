@@ -1,55 +1,58 @@
-/**
- * Created by Bardiaswift
- *
- * @flow
- */
-
-/* eslint-disable no-underscore-dangle, camelcase */
-
-import type { ElementRef } from 'react';
-import { NavigationActions, StackActions } from 'react-navigation';
-import type {
+import {
+  RefObject,
+} from 'react';
+import {
   NavigationState,
-  NavigationDispatch,
-  NavigationContainer,
-  NavigationScreenProp,
   NavigationParams,
+  NavigationContainerComponent,
   NavigationNavigateAction,
   NavigationResetAction,
   NavigationPopToTopAction,
+  NavigationActions,
+  StackActions,
 } from 'react-navigation';
 
-type Navigator = NavigationContainer<NavigationState, {}, {}> & {
-  state: { nav: NavigationState },
-  dispatch: NavigationDispatch,
-};
+interface Navigator extends NavigationContainerComponent {
+  state: {
+    nav: NavigationState;
+  };
+  subs: {
+    remove: () => void;
+  };
+}
 
-const navigatorsByName: { [routeName: string]: ?Navigator } = {};
+const navigatorsByName: {
+  [routeName: string]: Navigator | undefined;
+} = {};
 
-export const createNavigatiorSetter = (
+export const setNavigationContainer = (
   navigationName: string,
-  needRemoveSubs?: true,
-) => (navigator: ElementRef<*>) => {
-  if (navigator && navigatorsByName[navigationName] == null) {
+  {
+    current: navigationContainerNode,
+  }: RefObject<NavigationContainerComponent>,
+  needRemoveSubs?: boolean,
+) => {
+  if (navigationContainerNode != null && navigatorsByName[navigationName] == null) {
+    const navigator = (navigationContainerNode as Navigator);
     if (needRemoveSubs) {
       const { subs } = navigator;
-      if (subs) {
+      if (subs != null) {
         subs.remove();
       }
     }
     navigatorsByName[navigationName] = navigator;
   }
-}
+};
 
 export const createNavigation = (navigationRouteName: string) => ({
   navigate: (
     routeName: string,
     params?: NavigationParams,
-    action?: ?NavigationNavigateAction,
+    action?: NavigationNavigateAction,
     key?: string,
   ) => {
     const navigator = navigatorsByName[navigationRouteName];
-    if (navigator) {
+    if (navigator != null) {
       const navigationAction = NavigationActions.navigate({
         routeName,
         params,
@@ -61,7 +64,7 @@ export const createNavigation = (navigationRouteName: string) => ({
   },
   setParams: (params: NavigationParams, key?: string) => {
     const navigator = navigatorsByName[navigationRouteName];
-    if (navigator) {
+    if (navigator != null) {
       const {
         state: {
           nav: {
@@ -77,9 +80,9 @@ export const createNavigation = (navigationRouteName: string) => ({
       navigator.dispatch(action);
     }
   },
-  goBack: (key?: ?string) => {
+  goBack: (key?: string | null) => {
     const navigator = navigatorsByName[navigationRouteName];
-    if (navigator) {
+    if (navigator != null) {
       const action = NavigationActions.back({ key });
       navigator.dispatch(action);
     }
@@ -91,7 +94,7 @@ export const createNavigation = (navigationRouteName: string) => ({
     key?: string,
   ) => {
     const navigator = navigatorsByName[navigationRouteName];
-    if (navigator) {
+    if (navigator != null) {
       const pushAction = StackActions.push({
         routeName,
         params,
@@ -103,34 +106,26 @@ export const createNavigation = (navigationRouteName: string) => ({
   },
   pop: (n?: number) => {
     const navigator = navigatorsByName[navigationRouteName];
-    if (navigator) {
+    if (navigator != null) {
       const action = StackActions.pop({ n });
       navigator.dispatch(action);
     }
   },
-  reset: (routeName?: string | string[], params?: Object) => {
+  reset: (routeName?: string | string[], params?: NavigationParams) => {
     const navigator = navigatorsByName[navigationRouteName];
-    if (navigator) {
-      const {
-        state: {
-          nav: {
-            routes,
-            index,
-          },
-        },
-      } = navigator;
+    if (navigator != null) {
       let action: NavigationResetAction | NavigationPopToTopAction;
       if (routeName) {
-        const actions: Array<NavigationNavigateAction> = [];
+        const actions: NavigationNavigateAction[] = [];
         let index: number;
         if (Array.isArray(routeName)) {
           index = routeName.length - 1;
           routeName.forEach((rn, i) => {
             const payload: {
-              routeName: string,
-              params?: ?NavigationParams,
-              action?: ?NavigationNavigateAction,
-              key?: string,
+              routeName: string;
+              params?: NavigationParams;
+              action?: NavigationNavigateAction;
+              key?: string;
             } = { routeName: rn };
             if (i === index && params) {
               payload.params = params;
@@ -150,11 +145,10 @@ export const createNavigation = (navigationRouteName: string) => ({
   },
   getCanNavigateBack: () => {
     const navigator = navigatorsByName[navigationRouteName];
-    if (navigator) {
+    if (navigator != null) {
       const {
         state: {
           nav: {
-            routes,
             index,
           },
         },
@@ -163,9 +157,9 @@ export const createNavigation = (navigationRouteName: string) => ({
     }
     return false;
   },
-  getCurrentRouteName: (): ?string => {
+  getCurrentRouteName: (): string | null => {
     const navigator = navigatorsByName[navigationRouteName];
-    if (navigator) {
+    if (navigator != null) {
       const {
         state: {
           nav: {

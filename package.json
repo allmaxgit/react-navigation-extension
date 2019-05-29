@@ -1,8 +1,8 @@
 {
   "name": "react-navigation-extension",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "Convenient navigation service with using refs on navigators",
-  "main": "src.js",
+  "main": "src.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,12 +17,30 @@
     "react-navigation",
     "extension",
     "refs",
-    "performance"
+    "performance",
+    "TypeScript"
   ],
   "author": "Dmitriy Shishkin",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/allmaxgit/react-navigation-extension/issues"
   },
-  "homepage": "https://github.com/allmaxgit/react-navigation-extension#readme"
+  "homepage": "https://github.com/allmaxgit/react-navigation-extension#readme",
+  "peerDependencies": {
+    "react": ">=16.8.3",
+    "react-navigation": ">=3.11.0"
+  },
+  "devDependencies": {
+    "@react-native-community/eslint-config": "^0.0.5",
+    "@types/react": "^16.8.18",
+    "@typescript-eslint/eslint-plugin": "^1.9.0",
+    "@typescript-eslint/parser": "^1.9.0",
+    "eslint": "5.16.0",
+    "eslint-config-airbnb": "17.1.0",
+    "eslint-plugin-import": "2.17.2",
+    "eslint-plugin-jsx-a11y": "6.2.1",
+    "react": "^16.8.3",
+    "react-navigation": "^3.11.0",
+    "typescript": "^3.4.5"
+  }
 }
