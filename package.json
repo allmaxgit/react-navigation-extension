@@ -1,6 +1,6 @@
 {
   "name": "react-navigation-extension",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Convenient navigation service with using refs on navigators",
   "main": "src.ts",
   "scripts": {
@@ -18,7 +18,7 @@
     "extension",
     "refs",
     "performance",
-    "TypeScript"
+    "typescript"
   ],
   "author": "Dmitriy Shishkin",
   "license": "ISC",
@@ -41,6 +41,6 @@
     "eslint-plugin-jsx-a11y": "6.2.1",
     "react": "^16.8.3",
     "react-navigation": "^3.11.0",
-    "typescript": "^3.4.5"
+    "typescript": "^3.5.1"
   }
 }

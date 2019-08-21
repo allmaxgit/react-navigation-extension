@@ -32,7 +32,7 @@ export const setNavigationContainer = (
   }: RefObject<NavigationContainerComponent>,
   needRemoveSubs?: boolean,
 ) => {
-  if (navigationContainerNode != null && navigatorsByName[navigationName] == null) {
+  if (navigationContainerNode != null) {
     const navigator = (navigationContainerNode as Navigator);
     if (needRemoveSubs) {
       const { subs } = navigator;
